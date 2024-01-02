@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
-  runApp(ProviderScope(child: MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 final myProvider = StateProvider((ref) => "");
@@ -23,7 +23,7 @@ final counterProvider = StateProvider((ref) => "");
 
 class HomePage extends ConsumerWidget {
   HomePage({super.key});
-  final TextEditingController myController = new TextEditingController();
+  final TextEditingController myController = TextEditingController();
 
   int i = 0;
   @override
@@ -35,30 +35,34 @@ class HomePage extends ConsumerWidget {
       direction: Axis.vertical,
       children: [
         Expanded(
+          flex: 1,
           child: Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             color: Colors.lightGreen,
           ),
-          flex: 1,
         ),
         Expanded(
+          flex: 2,
           child: Flex(direction: Axis.horizontal, children: [
             Expanded(
+              flex: 8,
               child: Container(
                 color: Colors.white38,
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
+                height: 200,
                 child: TextField(
                     controller: myController,
-                    decoration: InputDecoration(hintText: '請輸入城市名稱')),
-                height: 200,
+                    decoration: const InputDecoration(hintText: '請輸入城市名稱')),
               ),
-              flex: 8,
             ),
             Expanded(
+              flex: 2,
               child: Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
+                width: 200,
+                height: 200,
                 child: ElevatedButton(
-                  child: Text('確認'),
+                  child: const Text('確認'),
                   onPressed: () async {
                     ref.read(counterProvider.notifier).state = "讀取中...";
                     Dio dio = Dio();
@@ -81,11 +85,10 @@ class HomePage extends ConsumerWidget {
                       int z = 0;
                       for (z = 0; z < 3; z++) {
                         var report = city[k]['weatherElement'][0]['time'][z];
-                        strDataTemp += report['startTime'].toString() + " ~ \n";
-                        strDataTemp += report['endTime'].toString() + "\n";
+                        strDataTemp += "${report['startTime']} ~ \n";
+                        strDataTemp += "${report['endTime']}\n";
                         strDataTemp +=
-                            report['parameter']['parameterName'].toString() +
-                                "\n";
+                            "${report['parameter']['parameterName']}\n";
                       }
                       strDataTemp += "\n";
                     }
@@ -96,50 +99,46 @@ class HomePage extends ConsumerWidget {
                     //setState(() {});
                   },
                 ),
-                width: 200,
-                height: 200,
               ),
-              flex: 2,
             ),
           ]),
-          flex: 2,
         ),
         Expanded(
+          flex: 18,
           child: Flex(direction: Axis.horizontal, children: [
             Expanded(
+              flex: 1,
               child: Container(
                 color: Colors.white38,
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 height: 200,
               ),
-              flex: 1,
             ),
             Expanded(
               flex: 20,
               child: Container(
                   child: ListView(children: <Widget>[
-                Text("${ref.watch(counterProvider)}"),
+                Text(ref.watch(counterProvider)),
               ])),
             ),
             Expanded(
+              flex: 1,
               child: Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 color: Colors.white38,
                 width: 200,
                 height: 200,
               ),
-              flex: 1,
             )
           ]),
-          flex: 18,
         ),
         Expanded(
+          flex: 1,
           child: Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             color: Colors.lightGreen,
             height: 200,
           ),
-          flex: 1,
         ),
       ],
     );
